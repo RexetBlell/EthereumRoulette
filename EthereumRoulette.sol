@@ -61,7 +61,7 @@ contract EthereumRouletteInterface {
   // Player makes a bet on a particular spin_result.
   function player_make_bet(uint8 spin_result) etherRequired;
 
-  // Player calls this funciton to collect all winnings from a particular spin.
+  // Player calls this function to collect all winnings from a particular spin.
   function player_collect_winnings(uint spin_num) noEther;
 
   // If the owner is taking too long to reveal the spin result, player can call this
@@ -109,12 +109,14 @@ contract EthereumRoulette is EthereumRouletteInterface {
 
   modifier etherRequired {if (msg.value == 0) throw; _}
 
-  function EthereumRoulette(bytes32 first_num_hash, bytes32 second_num_hash) {
+  function EthereumRoulette() {
     owner = msg.sender;
     fraction = 800;
     owner_time_limit = 7 days;
     // The contract must always have 2 unrevealed spins. This is why we commit the first
     // two spins in the constructor. This means that it's not possible to bet on spin #1.
+    bytes32 first_num_hash = 0x3c81cf7279de81901303687979a6b62fdf04ec93480108d2ef38090d6135ad9f;
+    bytes32 second_num_hash = 0xb1540f17822cbe4daef5f1d96662b2dc92c5f9a2411429faaf73555d3149b68e;
     spins.length++;
     spins[spins.length - 1].commit_hash = first_num_hash;
     spins.length++;
